@@ -1,0 +1,42 @@
+package com.vedansh.payforge.payment.entity;
+
+import com.vedansh.payforge.common.enums.PaymentActor;
+import com.vedansh.payforge.common.enums.PaymentEvent;
+import com.vedansh.payforge.common.enums.PaymentStatus;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
+
+@Entity
+@Table(name = "payment_transition_log")
+public class PaymentTransitionLog {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @JoinColumn(name = "payment_id")
+    private Payment payment;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="from_status",length=30)
+    private PaymentStatus fromStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="event",length=30,nullable = false)
+    private PaymentEvent paymentEvent;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="to_status",length=30,nullable = false)
+    private PaymentStatus toStatus;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name="actor" , length = 100)
+    private PaymentActor actor;
+
+    @Column(name = "occurred_at",nullable = false)
+    private LocalDateTime occurredAt;
+
+}
